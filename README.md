@@ -46,4 +46,59 @@ rule in `/etc/fstab`:
 Lastly, do a `rm -rf /home/*` to ensure the directory is empty before rebooting. After a reboot
 the home directory should be available as usual. (And in my case a bunch of indicators crashed).
 
+## Desktop setup
+
+Clone the repo at [lah7/Ambiant-MATE](https://github.com/lah7/Ambiant-MATE), and copy the
+`./usr/share/{icons,themes}` directories into `/usr/share/`, the other path `~/.local/share/` did
+not seem to work on Debian.
+
+Select these in the `System -> Preferences -> Look and Feel -> Appearance` menu, also modify
+the button window decoration as you see fit. Install `mate-tweak` and use it to hide the homedir
+from the Desktop, and set a solid background color.
+
+Next up, rightclick the workspace switcher to set the desired number of workspaces. Go into the 
+`Preferences -> Hardware -> Keyboard Shortcut` settings and modify the work space switching to use
+`mod4+{up,left,right,down}` (mod4=winkey) for switching workspaces. Do not forget to disable the
+minimize and maximize hotkeys, since they overlap with `mod4+{up,down}` and glitch the switching
+such that it requires two pressess to switch. Also change `move window to workspace` to `shift+mod4+{...}`.
+
+
+At this point you probably want to get bash tab completeion; `apt install bash-completion`.
+Obviously, this is also the point where one installs things like text editors, browsers etc.
+It's also a good point to modify `root`'s `.bashrc` file to hold the contents of `./root_bashrc.sh`
+such that it gets a different color and we still get tab completion.
+
+
+## Rust / Displaylight
+By now things are starting to shape up, and my [displaylight](https://github.com/iwanders/displaylight_rs) is next.
+
+Since this new drive is much larger I decided to create a `/workspace/` directory on the drive that's
+shared with the OS, this allows me to keep persistant build artifacts and volatile data / programs.
+
+Before installing rust we put the following in our `.bashrc`:
+```
+export RUSTUP_HOME=/workspace/ivor/.rustup
+export CARGO_HOME=/workspace/ivor/.cargo
+```
+
+After which we install Rust using the recommended shellscript to install `rustup` from the website.
+This installs `rustup` and `cargo` into the `/workspace/ivor/` directory instead of into my homedir.
+
+Now that we can build, the linker fails, which is fixed by adding the `libudev-dev libx11-dev libxext-dev` dependencies.
+Then we run `usermod -aG dialout ivor` to add ourselves to the `dialout` group such that we can 
+interact with the serial interface, log out, log back in, and it comes up because the default startup
+applications are still set from mounting the homedir.
+
+## Cleanup & Minor things
+
+Opening a terminal from the file editor is useful, to add `Open in Terminal` in the context menu of
+the file editor; `apt install caja-open-terminal`.
+
+There's a bunch of terminal emulators I don't care about, we can determine the package names from
+the binary names that are found in the menu shortcuts that themselves live in `/usr/share/applications/`.
+
+```
+apt remove goldendict xterm anthy anthy-common mozc-*  xiterm+thai mlterm mlterm-tiny
+apt autoremove
+```
 
