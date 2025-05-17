@@ -1,4 +1,4 @@
-# Install notes Debian 12 (Bookworm)
+# Install notes Debian 12.10 (Bookworm)
 
 Recording some notes about a reinstallation.
 
@@ -101,4 +101,19 @@ the binary names that are found in the menu shortcuts that themselves live in `/
 apt remove goldendict xterm anthy anthy-common mozc-*  xiterm+thai mlterm mlterm-tiny
 apt autoremove
 ```
+
+## Mounting drives from the desktop environment.
+
+In Ubuntu, the desktop environment can mount drives (like the NTFS `TRANSFER` drive from earlier)
+without requiring a root password. On Debian not so much, to fix this we need to know that `polkit`
+is used to request the permissions.
+
+We follow an example from [this wiki page](https://github.com/coldfix/udiskie/wiki/Permissions).
+- Create the group `storage`
+- Add ourselves to it; `usermod -aG storage ivor`
+- Place [50-udiskie_modified.rules](50-udiskie_modified.rules) into `/etc/polkit-1/rules.d`, this
+file is slightly modified from the linked example.
+- Logout, log back in, restart the `polkit` service.
+- We can mount drives without typing the sudo password.
+
 
