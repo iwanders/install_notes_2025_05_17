@@ -102,6 +102,12 @@ apt remove goldendict xterm anthy anthy-common mozc-*  xiterm+thai mlterm mlterm
 apt autoremove
 ```
 
+In case the Bitstream Vera font is needed:
+```
+apt install ttf-bitstream-vera
+```
+
+
 ## Mounting drives from the desktop environment.
 
 In Ubuntu, the desktop environment can mount drives (like the NTFS `TRANSFER` drive from earlier)
