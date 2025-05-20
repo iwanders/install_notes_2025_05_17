@@ -107,6 +107,10 @@ In case the Bitstream Vera font is needed:
 apt install ttf-bitstream-vera
 ```
 
+To prevent having to type the username in the login screen, modify `/etc/lightdm/lightdm.conf`, look
+for the `[Seat:*]` section and in it uncomment `greeter-hide-users=false`, eliminating the password
+by using autologin doesn't help much as the keyring needs to be unlocked manually later.
+
 
 ## Mounting drives from the desktop environment.
 
