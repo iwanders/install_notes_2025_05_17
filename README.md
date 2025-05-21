@@ -111,6 +111,9 @@ To prevent having to type the username in the login screen, modify `/etc/lightdm
 for the `[Seat:*]` section and in it uncomment `greeter-hide-users=false`, eliminating the password
 by using autologin doesn't help much as the keyring needs to be unlocked manually later.
 
+For `perf`, it's not `linux-tools`, instead use `linux-perf`,
+(`echo -1 > /proc/sys/kernel/perf_event_paranoid` still works).
+
 
 ## Mounting drives from the desktop environment.
 
