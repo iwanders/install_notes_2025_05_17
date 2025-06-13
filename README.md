@@ -114,9 +114,9 @@ by using autologin doesn't help much as the keyring needs to be unlocked manuall
 For `perf`, it's not `linux-tools`, instead use `linux-perf`,
 (`echo -1 > /proc/sys/kernel/perf_event_paranoid` still works).
 
-HEIC/HEIF support in Caja and Eye of Mate:
+HEIC/HEIF support in Caja and Eye of Mate, last package contains `heif-convert` for conversion:
 ```
-apt install heif-gdk-pixbuf heif-thumbnailer
+apt install heif-gdk-pixbuf heif-thumbnailer libheif-examples
 ```
 
 
