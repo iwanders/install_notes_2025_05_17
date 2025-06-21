@@ -119,6 +119,15 @@ HEIC/HEIF support in Caja and Eye of Mate, last package contains `heif-convert` 
 apt install heif-gdk-pixbuf heif-thumbnailer libheif-examples
 ```
 
+For valgrind (at least immediately after install) it complains with:
+```
+valgrind: failed to start tool 'memcheck' for platform 'amd64-linux': No such file or directory
+```
+This can be fixed with;
+```
+export VALGRIND_LIB=/usr/libexec/valgrind
+```
+
 
 ## Mounting drives from the desktop environment.
 
