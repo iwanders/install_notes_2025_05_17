@@ -128,6 +128,12 @@ This can be fixed with;
 export VALGRIND_LIB=/usr/libexec/valgrind
 ```
 
+Newer software can be obtained from [backports](https://backports.debian.org/Instructions/), no need
+to add the apt sources manually, they're there by default. For example:
+```
+apt install kicad/bookworm-backports
+```
+
 
 ## Mounting drives from the desktop environment.
 
