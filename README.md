@@ -134,6 +134,32 @@ to add the apt sources manually, they're there by default. For example:
 apt install kicad/bookworm-backports
 ```
 
+## Printing
+Printing, for my HP Laserjet P1102w, `apt install printer-driver-hpcups`, lets also add ourselves to
+the printing group with, `usermod -aG lpadmin ivor`, which didn't actually help, still need permissions
+to modify the printer settings.
+
+Polkit again, we can find the policy ids in `/usr/share/polkit-1/actions/`, specifically the
+`org.opensuse.cupspkhelper.mechanism.policy` file for cups? So we write `50-cups-allow.rules`, now
+we can at least edit things without typing passwords.
+
+Error from the `cups.service` is:
+```
+common/utils.c 79: unable to open /etc/hp/hplip.conf: No such file or directory
+```
+
+Which clearly points towards a missing hplip file.
+
+```
+apt install hplip
+```
+
+Okay, that still complains, internet says `hp-setup -u -i` to run, which claims my password is incorrect.
+And running it as root fails... 
+
+Inspecting `/usr/share/hplip/base/password.py` shows that it is trying to use `su` to do things, which is
+a no-go, changing that line in the `AUTH_TYPES` dictionary to `'debian': 'sudo'` makes things work.
+
 
 ## Mounting drives from the desktop environment.
 

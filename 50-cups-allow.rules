@@ -1,0 +1,21 @@
+
+
+polkit.addRule(function(action, subject) {
+  var YES = polkit.Result.YES;
+  var permission = {
+    "org.opensuse.cupspkhelper.mechanism.server-settings": YES,
+    "org.opensuse.cupspkhelper.mechanism.devices-get": YES,
+    "org.opensuse.cupspkhelper.mechanism.printer-set-default": YES,
+    "org.opensuse.cupspkhelper.mechanism.printer-enable": YES,
+    "org.opensuse.cupspkhelper.mechanism.printer-local-edit": YES,
+    "org.opensuse.cupspkhelper.mechanism.printer-remote-edit": YES,
+    "org.opensuse.cupspkhelper.mechanism.class-edit": YES,
+    "org.opensuse.cupspkhelper.mechanism.job-edit": YES,
+    "org.opensuse.cupspkhelper.mechanism.job-not-owned-edit": YES,
+    "org.opensuse.cupspkhelper.mechanism.all-edit": YES,
+    "org.opensuse.cupspkhelper.mechanism.printeraddremove": YES,
+  };
+  if (subject.isInGroup("lpadmin")) {
+    return permission[action.id];
+  }
+});
