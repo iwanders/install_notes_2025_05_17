@@ -89,6 +89,9 @@ Then we run `usermod -aG dialout ivor` to add ourselves to the `dialout` group s
 interact with the serial interface, log out, log back in, and it comes up because the default startup
 applications are still set from mounting the homedir.
 
+For the [NRF bluetooth sniffer](https://www.nordicsemi.com/Products/Development-tools/nRF-Sniffer-for-Bluetooth-LE),
+I also needed `usermod -a -G wireshark ivor`.
+
 ## Cleanup & Minor things
 
 Opening a terminal from the file editor is useful, to add `Open in Terminal` in the context menu of
