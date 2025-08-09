@@ -1,3 +1,102 @@
+# Upgrade to Debian 13 (Trixie)
+
+Notes on my Debian Bookworm Install [below](#install-notes-debian-1210-bookworm).
+
+It's time to upgrade from Bookworm to Trixie!
+
+Relevant links:
+- https://www.debian.org/releases/trixie/release-notes/upgrading.en.html
+- https://www.debian.org/releases/trixie/release-notes/issues.en.html
+- https://michael-prokop.at/blog/2025/07/20/what-to-expect-from-debian-trixie-newintrixie/
+
+My system is pretty boring in its current state, without any third party debs, and `apt-mark showhold` is empty.
+
+Note on encrypted systems [here](https://www.debian.org/releases/trixie/release-notes/issues.en.html#encrypted-filesystems-need-systemd-cryptsetup-package)
+> Please make sure the systemd-cryptsetup package is installed before rebooting, if you use encrypted filesystems.
+
+
+
+I renamed `/etc/apt/sources.list` to `/etc/apt/sources.list.d` and created `/etc/apt/sources.list.d/debian.sources` with the following contents:
+```
+Types: deb
+URIs: https://deb.debian.org/debian
+Suites: trixie trixie-updates
+Components: main non-free-firmware non-free contrib
+Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
+
+Types: deb
+URIs: https://security.debian.org/debian-security
+Suites: trixie-security
+Components: main non-free-firmware non-free contrib
+Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
+
+```
+Followed by
+```
+apt update
+```
+
+Which showed:
+```
+Reading state information... Done
+1978 packages can be upgraded. Run 'apt list --upgradable' to see them.
+```
+
+Next, the first stage:
+
+```
+apt upgrade --without-new-pkgs
+```
+
+Which shows:
+````
+927 upgraded, 0 newly installed, 0 to remove and 1051 not upgraded.
+Need to get 849 MB of archives.
+After this operation, 284 MB of additional disk space will be used.
+Do you want to continue? [Y/n] 
+```
+
+While running this I lost the font used by gtk in Mate, so all ui-fonts became rectangles for characters, wait patiently, it'll come back at a later stage in the install process.
+
+Okay, that ran without any problems, on to the second stage;
+```
+apt full-upgrade
+```
+
+Doesn't appear to be any shocking events in it, some packages like mate desktop are being uninstalled, as well as installed. Lets go with it. The `systemd-cryptsetup` package is among the ones to be installed.
+
+Prompts;
+```
+Configuration file '/etc/bluetooth/main.conf'
+ ==> Modified (by you or by a script) since installation.
+ ==> Package distributor has shipped an updated version.
+
+```
+Diff shows that it would remove the `ReverseServiceDiscovery` flag I set to false.
+
+```
+-ReverseServiceDiscovery = false
+-
+```
+
+Lets take maintainer's version for now, I can always toggle this back.
+
+Warning about `/etc/default/grub`, but it seems to be one variable change that's just specified differently, looks fine, taking maintainer's version.
+
+One for `/etc/lightdm/lightdm.conf`, also taking maintainers version.
+
+Building the nvidia modules now, so far so good.
+
+Entire update ran cleanly, exit code is zero.
+
+Confirmed `systemd-cryptsetup` is installed:
+```
+# dpkg -l | grep systemd-cr
+ii  systemd-cryptsetup                     257.7-1                         amd64        Provides cryptsetup, integritysetup and veritysetup utilities
+```
+
+Going for the reboot.
+
 # Install notes Debian 12.10 (Bookworm)
 
 Recording some notes about a reinstallation.
@@ -177,5 +276,7 @@ We follow an example from [this wiki page](https://github.com/coldfix/udiskie/wi
 file is slightly modified from the linked example.
 - Logout, log back in, restart the `polkit` service.
 - We can mount drives without typing the sudo password.
+
+
 
 
