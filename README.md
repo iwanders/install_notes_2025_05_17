@@ -15,7 +15,7 @@ Note on encrypted systems [here](https://www.debian.org/releases/trixie/release-
 > Please make sure the systemd-cryptsetup package is installed before rebooting, if you use encrypted filesystems.
 
 
-
+## Update process
 I renamed `/etc/apt/sources.list` to `/etc/apt/sources.list.d` and created `/etc/apt/sources.list.d/debian.sources` with the following contents:
 ```
 Types: deb
@@ -96,6 +96,21 @@ ii  systemd-cryptsetup                     257.7-1                         amd64
 ```
 
 Going for the reboot.
+
+## Fixes after update
+
+Reboot worked fine, my desktop even looks the same. Like nothing changed, excellent.
+
+I did have to provide my username in lightdm, so that's probably the changes I made to that config file.
+> To prevent having to type the username in the login screen, modify `/etc/lightdm/lightdm.conf`, look
+for the `[Seat:*]` section and in it uncomment `greeter-hide-users=false`, eliminating the password
+by using autologin doesn't help much as the keyring needs to be unlocked manually later.
+
+From below.
+
+Also `lsb_release -a` still states bookworm. `base-files` appears to be on trixie, and `/usr/lib/os-release` is stating Trixie?
+
+It's recommended to do an `apt autoremove` after updating, that seems fairly benign as well. Rebooting again, hopefully it's all good now.
 
 # Install notes Debian 12.10 (Bookworm)
 
