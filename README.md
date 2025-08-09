@@ -101,16 +101,39 @@ Going for the reboot.
 
 Reboot worked fine, my desktop even looks the same. Like nothing changed, excellent.
 
-I did have to provide my username in lightdm, so that's probably the changes I made to that config file.
+I did have to provide my username in lightdm, so that's probably the changes I made to that config file, from below:
 > To prevent having to type the username in the login screen, modify `/etc/lightdm/lightdm.conf`, look
 for the `[Seat:*]` section and in it uncomment `greeter-hide-users=false`, eliminating the password
 by using autologin doesn't help much as the keyring needs to be unlocked manually later.
 
-From below.
-
-Also `lsb_release -a` still states bookworm. `base-files` appears to be on trixie, and `/usr/lib/os-release` is stating Trixie?
+This does resolve that.
 
 It's recommended to do an `apt autoremove` after updating, that seems fairly benign as well. Rebooting again, hopefully it's all good now.
+
+
+The `lsb_release -a` command still states bookworm. `base-files` appears to be on trixie, and `/usr/lib/os-release` is stating Trixie? But `/etc/os-release` is still on Bookworm.
+
+```
+$ dpkg -S /etc/os-release
+local diversion from: /etc/os-release
+local diversion to: /etc/os-release.debootstrap
+base-files: /etc/os-release
+```
+Well, I can't find if this is intended, or whether I missed a prompt somewhere, but we can surely swap this file to make `lsb_release -a` work;
+```
+cd /etc/
+mv os-release os-release.bookworm.bak
+cp ../usr/lib/os-release os-release
+```
+After which:
+```
+# lsb_release -a
+No LSB modules are available.
+Distributor ID:	Debian
+Description:	Debian GNU/Linux 13 (trixie)
+Release:	13
+Codename:	trixie
+```
 
 # Install notes Debian 12.10 (Bookworm)
 
